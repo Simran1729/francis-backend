@@ -238,10 +238,6 @@ app.post("/api/create-ticket", upload.array('files', 10), async (req, res) => {
           },
       };
 
-
-
-
-
       console.log("ticketData is : ", ticketData);
 
       const ticketResponse = await axios.post(
