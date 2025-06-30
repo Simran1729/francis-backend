@@ -164,6 +164,7 @@ const upload = multer({storage : multer.memoryStorage()});
 
 app.post("/api/create-ticket", upload.array('files', 10), async (req, res) => {
   try {
+    console.log("backend route hit");
       // Extract form data
       const { subject, departmentId, description, severity, contactId,ticketCreator, team,projectCode,priority} = req.body;
 
@@ -200,6 +201,7 @@ app.post("/api/create-ticket", upload.array('files', 10), async (req, res) => {
 
       // Step 1: Create ticket in Zoho Desk
       const accessToken = await fetchAccessToken(); // Replace with your token
+      console.log("access token generated");
       if(!accessToken){
         return res.status(500).json({
           "message" : "access token not found"
