@@ -441,6 +441,45 @@ app.post("/test/create-ticket", upload.array('files', 10), async (req, res) => {
   }
 });
 
+app.get("/get-projectcode", async (req, res) => {
+  try {
+      accessToken = await fetchAccessToken();
+    console.log("access Token: ", accessToken);
+    // Replace with your token
+    if (!accessToken) {
+      return res.status(500).json({
+        message: "access token not found",
+      });
+    }
+    const response = await axios.get(
+      "https://desk.zoho.com/api/v1/cm_projects",
+      {
+        params: {
+          viewId: "1142108000000456256",
+          fields: "cf_project_code",
+        },
+        headers: {
+          Authorization: `Zoho-oauthtoken ${accessToken}`,
+          orgId: ZOHO_ORG_ID,
+          "Content-Type": "application/json",
+        },
+      },
+    );
+    console.log("Response of poject code from Zoho Desk:", response.data);
+    res.status(200).json(response.data);
+  } catch (error) {
+    console.error("Full error object:", error);
+    console.error(
+      "Error details:",
+      error.response
+        ? JSON.stringify(error.response.data, null, 2)
+        : error.message,
+    );
+    res.status(500).json({ error: "Failed to fetch custom module data" });
+  }
+});
+ 
+
 
 
 /////////////////////////------------------workdrive logic with ticket creatino --------------------------/////////////////////////////
